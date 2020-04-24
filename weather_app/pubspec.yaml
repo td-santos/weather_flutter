@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   http: ^0.12.0+4
   flare_flutter: ^2.0.3
+  intl: ^0.16.1
   
 
 dev_dependencies:
@@ -47,6 +48,7 @@ flutter:
   assets:
    - assets/weather.flr
    - assets/weather2.flr
+   - assets/weather3.flr
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
