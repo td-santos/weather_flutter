@@ -6,19 +6,27 @@ import 'package:weather_app/util/util.dart' as util;
 import 'package:weather_app/widgets/DialogCidade.dart';
 import 'package:weather_app/widgets/ItemListWeather.dart';
 
-
 class TelaPrincipal extends StatefulWidget {
   @override
   _TelaPrincipalState createState() => _TelaPrincipalState();
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
-
   String _cidadeInformada;
   TextEditingController _controllerCidade = TextEditingController();
   bool visibleCidade;
   DateTime data = DateTime.now();
   int hora;
+  var formatDia = DateFormat("dd");
+  var formatAnoMes = DateFormat("yyyy-MM-");
+  int diaSeguinte;
+  String anoMes;
+  Color corScaffold,
+      corContainer,
+      corTextoCidade,
+      corFloatButtom,
+      corTemperatura;
+  bool corItemListDia;
 
   /*Future _abrirNovaTela(BuildContext context) async {
     Map result = await Navigator.of(context)
@@ -42,8 +50,30 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
       print(_cidadeInformada);
     }
   }*/
-
-  
+  setarCoresDiaNoite(int horaAtual) {
+    if (horaAtual < 5) {
+      corScaffold = Colors.deepPurple[900];
+      corContainer = Colors.deepPurple[200];
+      corTextoCidade = Colors.deepPurple[200];
+      corFloatButtom = Colors.indigo[700];
+      corTemperatura = Colors.indigo[700];
+      corItemListDia = false;
+    } else if (horaAtual < 18) {
+      corScaffold = Colors.cyan[300];//Colors.orange[300];
+      corContainer = Colors.white;
+      corTextoCidade = Colors.white;
+      corFloatButtom = Colors.orange[300];
+      corTemperatura = Colors.orange[400];
+      corItemListDia = true;
+    } else {
+      corScaffold = Colors.deepPurple[900];
+      corContainer = Colors.deepPurple[200];
+      corTextoCidade = Colors.deepPurple[200];
+      corFloatButtom = Colors.indigo[700];
+      corTemperatura = Colors.indigo[700];
+      corItemListDia = false;
+    }
+  }
 
   @override
   void initState() {
@@ -52,8 +82,14 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 
     visibleCidade = true;
 
-    hora = int.parse("${data.toString().substring(10)[1]}${data.toString().substring(10)[2]}");
+    hora = int.parse(
+        "${data.toString().substring(10)[1]}${data.toString().substring(10)[2]}");
     print(hora);
+    diaSeguinte = int.parse(formatDia.format(data)) + 1;
+    anoMes = formatAnoMes.format(data);
+    print('DIA ATUAL : $diaSeguinte');
+    setarCoresDiaNoite(hora);
+
     //print(data.toString().substring(10)[1]);
   }
 
@@ -63,11 +99,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: hora < 5
-                            ? Colors.deepPurple[900]
-                            : hora < 18 ? Colors.blue[300] : Colors.deepPurple[900]
-      
-      ,
+      backgroundColor: corScaffold,
       body: SingleChildScrollView(
           child: Stack(
         children: <Widget>[
@@ -82,32 +114,9 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                 height: 500,
                 width: 500,
                 decoration: BoxDecoration(
-                    color: hora < 5
-                            ? Colors.deepPurple[200]
-                            : hora < 18 ? Colors.blue[100] : Colors.deepPurple[200],
-                    
+                    color: corContainer,
                     borderRadius: BorderRadius.circular(height * 0.5)),
               )),
-          Visibility(
-            visible: visibleCidade,
-            child: Positioned(
-                top: 40,
-                child: Container(
-                  width: width,
-                  child: Center(
-                    child: Text(
-                      _cidadeInformada == null
-                          ? util.cidadeDefault
-                          : _cidadeInformada,
-                      style: TextStyle(fontSize: 30,
-                      color: hora < 5
-                            ? Colors.white
-                            : hora < 18 ? Colors.black : Colors.white,
-                      ),
-                    ),
-                  ),
-                )),
-          ),
           Visibility(
             visible: !visibleCidade,
             child: Positioned(
@@ -122,21 +131,26 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15))),
-                    onSubmitted: (_){
+                    onSubmitted: (_) {
                       setState(() {
-                        _cidadeInformada = _controllerCidade.text;
-                        visibleCidade =true;
+                        if (_controllerCidade.text == null ||
+                            _controllerCidade.text.isEmpty) {
+                          //_cidadeInformada = util.cidadeDefault;
+                        } else {
+                          _cidadeInformada = _controllerCidade.text;
+                        }
+                        visibleCidade = true;
                       });
                     },
                   ),
-                  
                 )),
           ),
           Positioned(
               top: 60,
               right: 10,
-              left: 10,
-              child: atualizaTemp(_cidadeInformada)),
+              //left: 0,
+              child: atualizaTemp(_cidadeInformada)
+          ),
           Positioned(
               top: 620,
               left: 10,
@@ -145,20 +159,33 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(bottom: 10),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Text(
-                        "Previsão para Amanhã:",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Próximo dia em: ",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          width: 0,
+                        ),
+                        Text(
+                          _cidadeInformada == null
+                              ? util.cidadeDefault
+                              : _cidadeInformada,
+                          style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: corTextoCidade),
+                        ),
+                      ],
                     ),
                   ),
                   listaToday(_cidadeInformada, DateTime.now().toString())
                 ],
-              ))
+              )
+          )
         ],
       )
           /*
@@ -177,23 +204,18 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           
       ),*/
           ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 40),
         child: FloatingActionButton.extended(
-          label: Text("Cidade"),
-          icon: Icon(
+            label: Text("   Cidade   "),
+            icon: Icon(
               Icons.search,
               size: 30,
               color: Colors.white,
             ),
             elevation: 0,
-            backgroundColor: Colors.indigo,
-            /*child: Icon(
-              Icons.search,
-              size: 50,
-              color: Colors.white,
-            ),*/
+            backgroundColor: corFloatButtom,
             onPressed: () {
               setState(() {
                 visibleCidade = false;
@@ -218,13 +240,11 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             print('DATA hoje: $data');
 
             conteudolist.forEach((f) {
-              if (f.toString().contains("2020-04-24")) {
-                
+              if (f.toString().contains("$anoMes$diaSeguinte")) {
                 print(f['main']['temp']);
                 listaHJ.add(f);
               }
             });
-            
 
             return SizedBox(
               height: 125,
@@ -237,11 +257,11 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                         DateTime.parse(listaHJ[index]['dt_txt'].toString()));
 
                     return ItemListWeather(
-                      temp: listaHJ[index]['main']['temp'].toString(),
-                      animation:
-                          listaHJ[index]['weather'][0]['icon'].toString(),
-                      horario: horario,
-                    );
+                        temp: listaHJ[index]['main']['temp'].toString(),
+                        animation:
+                            listaHJ[index]['weather'][0]['icon'].toString(),
+                        horario: horario,
+                        dia: corItemListDia);
                     //return Text(listaHJ[index]['main']['temp'].toString());
                   }),
             );
@@ -262,7 +282,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               width: MediaQuery.of(context).size.width,
               //alignment: Alignment.topRight,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
@@ -275,28 +295,30 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     ),
                   ),
                   Text(
-                    conteudo['main']['temp'].toString()[0] +
-                        conteudo['main']['temp']
-                            .toString()[1]
-                            .replaceAll(".", "") 
-                        +"°",
-                    //'10c',
-                    textAlign: TextAlign.end,
-                    style: TextStyle(
-                        fontSize: 100,
-                        fontWeight: FontWeight.bold,
-                        color: hora < 5
-                            ? Colors.white
-                            : hora < 18 ? Colors.black : Colors.white),
+                      conteudo['main']['temp'].toString()[0] +
+                          conteudo['main']['temp']
+                              .toString()[1]
+                              .replaceAll(".", ""),// +"°",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: 140,
+                        fontWeight: FontWeight.w200,
+                        color: corTemperatura,
+                      )
                   ),
-                  
+                  Text("°",
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: corTemperatura,
+                        height: 0
+                      )
+                  ),
                 ],
               ),
             );
           } else {
-            return Container(
-              child: Text('Deu Ruim Heim !'),
-            );
+            return Container();
           }
         });
   }

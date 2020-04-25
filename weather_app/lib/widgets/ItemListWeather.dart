@@ -6,8 +6,9 @@ class ItemListWeather extends StatelessWidget {
   final String temp;
   final String animation;
   final String horario;
+  final bool dia;
 
-  const ItemListWeather({Key key, this.temp, this.animation, this.horario}) : super(key: key);
+  const ItemListWeather({Key key, this.temp, this.animation, this.horario, this.dia}) : super(key: key);
 
   
 
@@ -20,7 +21,7 @@ class ItemListWeather extends StatelessWidget {
         height: 100,
         width: 70,
         decoration: BoxDecoration(
-          color: Colors.indigo[700],
+          color: dia == true ? Colors.orange[300] :Colors.indigo[700],
           borderRadius: BorderRadius.circular(17)
         ),
         child: Column(
