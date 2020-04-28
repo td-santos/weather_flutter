@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/api/weatherAPI.dart';
 import 'package:weather_app/util/util.dart' as util;
-import 'package:weather_app/widgets/DialogCidade.dart';
+
 import 'package:weather_app/widgets/ItemListWeather.dart';
 
 class TelaPrincipal extends StatefulWidget {
@@ -28,28 +28,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
       corTemperatura;
   bool corItemListDia;
 
-  /*Future _abrirNovaTela(BuildContext context) async {
-    Map result = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => NovaCidade()));
-
-    if (result != null && result.containsKey('cidade')) {
-      _cidadeInformada = result['cidade'];
-      print(_cidadeInformada);
-    }
-  }
-
-  Future _dialogCidade(BuildContext context) async {
-    Map result = showDialog(
-        context: context,
-        builder: (context) {
-          return DialogCidade();
-        }) as Map;
-
-    if (result != null && result.containsKey('cidade')) {
-      _cidadeInformada = result['cidade'];
-      print(_cidadeInformada);
-    }
-  }*/
+  
   setarCoresDiaNoite(int horaAtual) {
     if (horaAtual < 5) {
       corScaffold = Colors.deepPurple[900];
