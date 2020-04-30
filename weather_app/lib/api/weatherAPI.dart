@@ -13,6 +13,8 @@ Future<Map> buscarClima(String appID,String cidade)async{
   }
 }
 
+
+
 Future<Map> buscarListToday(String appID,String cidade)async{
   String urlAPI ='http://api.openweathermap.org/data/2.5/forecast?q=${cidade}&appid=${appID}&units=metric';
   http.Response response = await http.get(urlAPI);
