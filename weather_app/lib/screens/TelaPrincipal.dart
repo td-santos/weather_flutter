@@ -19,6 +19,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   int hora;
   var formatDia = DateFormat("dd");
   var formatAnoMes = DateFormat("yyyy-MM-");
+  var formatAnoMesDIA = DateFormat("yyyy-MM-dd");
   int diaSeguinte;
   String anoMes;
   Color corScaffold,
@@ -213,17 +214,75 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             Map conteudo = snapshot.data;
             var dataConteudo = conteudo['list'][0]['dt_txt'].toString();
             List conteudolist = conteudo['list'];
+            List conteudolist2 = conteudo['list'];
             List listaHJ = [];
 
             print('DATA COUNDEUDO: $dataConteudo');
             print('DATA hoje: $data');
+            print('AnoMesDiaSeguinte: ${anoMes}${diaSeguinte}');
 
+            String diaSeguinte2;
+            if(diaSeguinte.toString().length ==1){
+              diaSeguinte2 ='0$diaSeguinte';
+            }else{
+              diaSeguinte2=diaSeguinte.toString();
+            }
+
+            //Dias da semana
+
+            double a=0;
+            int b =0;
+            List listDias=[];
+            List listDiasUnicos=[];
+            List listTemp=[];
+            List listTempDIA=[];            
+            List listMapDataTemp=[];
+            
+            
             conteudolist.forEach((f) {
-              if (f.toString().contains("$anoMes$diaSeguinte")) {
-                print(f['main']['temp']);
-                listaHJ.add(f);
+              if (f.toString().contains("${anoMes}")){                
+                  listDias.add(formatAnoMesDIA.format(DateTime.parse(f['dt_txt'])));
+                  listaHJ.add(f);
+                  //a = a + double.parse(f['main']['temp'].toString().replaceAll(',', '.'));                
               }
             });
+
+            listDiasUnicos =listDias.toSet().toList();
+            print('LISTA DiasUnicos: $listDiasUnicos');
+            print('LENGTH: ${listDias.length}');           
+
+            
+             for(int i = 0 ;i<listDiasUnicos.length;i++){
+               conteudolist.forEach((f){
+                 String dataTeste;                 
+                 dataTeste =listDiasUnicos[i];
+
+                 if(f.toString().contains('$dataTeste')){
+                   
+                   a = a + double.parse(f['main']['temp'].toString().replaceAll(',', '.'));
+                   b++;
+                 }
+                 
+               });
+               listTemp.add(a);
+               print('SOMA Temp:${listDiasUnicos[i]} :$a');
+               print('Media Temp:${listDiasUnicos[i]} :${(a/b)}');
+               listTempDIA.add((a/b).toStringAsFixed(2));               
+               listMapDataTemp.add({'data':listDiasUnicos[i],'temp_media':(a/b).toStringAsFixed(2)});
+               a=0;
+               b=0;
+             }            
+
+            //print('SOMA TempMAX: $a');
+            //print('MediaMAX: ${a/listaHJ.length}');            
+            listMapDataTemp.removeAt(0);
+            print('----------------------');
+            print('LISTA TEMP: $listTemp');
+            print('LISTA TEMP MEDIA: $listTempDIA');
+            print('LIST MAP DIA_TEMP: $listMapDataTemp');
+
+            
+            
 
             return SizedBox(
               height: 125,

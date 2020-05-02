@@ -4,9 +4,9 @@ import 'package:weather_app/screens/TelaPrincipal.dart';
 
 main(List<String> args) {
   runApp(MaterialApp(
-    home: HomePage(),
+    //home: HomePage(),
     theme: ThemeData.light(),
-    //home: TelaPrincipal(),
+    home: TelaPrincipal(),
     debugShowCheckedModeBanner: false,
   ));
 }
