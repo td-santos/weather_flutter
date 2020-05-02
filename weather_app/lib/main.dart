@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:weather_app/screens/HomePage.dart';
 import 'package:weather_app/screens/TelaPrincipal.dart';
 
 main(List<String> args) {
-  runApp(MaterialApp(
-    //home: HomePage(),
+  
+
+  initializeDateFormatting('pt_BR',null).then((_){
+    runApp(MaterialApp(
+    home: HomePage(),
     theme: ThemeData.light(),
-    home: TelaPrincipal(),
+    //home: TelaPrincipal(),
     debugShowCheckedModeBanner: false,
   ));
+  });
 }
