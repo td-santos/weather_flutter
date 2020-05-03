@@ -13,7 +13,7 @@ Future<Map> buscarClima(String appID,String cidade)async{
   }
 }
 
-
+//http://api.openweathermap.org/data/2.5/forecast?q=Rio de Janeiro&appid=bfcd22a403f236384e97aade0514c99b&units=metric
 
 Future<Map> buscarListToday(String appID,String cidade)async{
   String urlAPI ='http://api.openweathermap.org/data/2.5/forecast?q=${cidade}&appid=${appID}&units=metric';

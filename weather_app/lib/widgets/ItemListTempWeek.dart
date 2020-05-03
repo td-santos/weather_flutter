@@ -10,7 +10,7 @@ class ItemListTempWeek extends StatelessWidget {
   final String animation;
 
   const ItemListTempWeek(
-      {Key key, this.data, this.temp, this.corText, this.corContainer, this.animation='03d'})
+      {Key key, this.data, this.temp, this.corText, this.corContainer, this.animation})
       : super(key: key);
 
   @override
@@ -20,18 +20,25 @@ class ItemListTempWeek extends StatelessWidget {
     DateFormat formatDiaMes = DateFormat('dd/MM');
     DateTime dataRecebida = DateTime.parse(data);
     String dataFormatada = formatDiaNome.format(dataRecebida);
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Column(
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-              color: corContainer, borderRadius: BorderRadius.circular(15)),
+              color: corContainer, borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(15)
+              )),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               
                   Container(
-                    width: 100,
+                    width: width * 0.2,//100,
                     padding: EdgeInsets.only(left: 20,right: 20,top: 15,bottom: 15),
                     decoration: BoxDecoration(
                         //color: Colors.blue[900],
@@ -41,11 +48,19 @@ class ItemListTempWeek extends StatelessWidget {
                           colors: [
                           Colors.blue[900],Colors.purple
                         ]),
-                        borderRadius: BorderRadius.circular(15)),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          bottomLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(5),
+                          topRight: Radius.circular(25)
+                        )),
                     child: Center(
                       child: Text(
                         dataFormatada,
-                        style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: width * 0.04,//17,
+                          fontWeight: FontWeight.w600, 
+                          color: Colors.white),
                       ),
                     ),
                   ),
@@ -67,7 +82,10 @@ class ItemListTempWeek extends StatelessWidget {
                     padding: EdgeInsets.only(right: 15,left: 10),
                     child: Text(
                       '${temp[0]}${temp[1].replaceAll(".", "")}°c',
-                      style: TextStyle(fontSize: 20, color: corText, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                        fontSize:width * 0.05 ,//20, 
+                        color: corText, 
+                        fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],

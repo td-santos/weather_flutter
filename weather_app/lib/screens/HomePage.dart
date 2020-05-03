@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String _cidadeInformada;
   TextEditingController _controllerCidade = TextEditingController();
-  var formatData = DateFormat('EEEE, dd MMMM','pt_BR');
+  var formatData = DateFormat('EEEE, dd MMMM', 'pt_BR');
   DateTime dataAtual = DateTime.now();
   bool valueSwitch = false;
   bool visibleCidade;
@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage> {
   var formatAnoMesDIA = DateFormat("yyyy-MM-dd");
   var formatAnoMes = DateFormat("yyyy-MM-");
   String anoMes;
-  
 
   setCores() {
     if (valueSwitch == false) {
@@ -62,12 +61,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: corFundo,
       appBar: AppBar(
@@ -115,12 +114,19 @@ class _HomePageState extends State<HomePage> {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                Icon(
-                                  Icons.location_on,
-                                  size: 30,
-                                  color: valueSwitch == false
-                                      ? Colors.grey[850]
-                                      : Colors.orange[600],
+                                GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      visibleCidade =false;
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.location_on,
+                                    size: width * 0.08,//30,
+                                    color: valueSwitch == false
+                                        ? Colors.grey[850]
+                                        : Colors.orange[600],
+                                  ),
                                 ),
                                 Visibility(
                                     visible: visibleCidade,
@@ -133,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                                       child: Text(
                                         '${dadosJson['name']}',
                                         style: TextStyle(
-                                            fontSize: 40,
+                                            fontSize: width * 0.09,//40,
                                             fontWeight: FontWeight.bold,
                                             color: corText),
                                       ),
@@ -170,13 +176,13 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               '       ${formatData.format(dataAtual)}',
                               style: TextStyle(
-                                  fontSize: 17, color: Colors.orange[700]),
+                                  fontSize: width * 0.04 /*17*/, color: Colors.orange[700]),
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             Container(
-                              height: 200,
+                              height:height * 0.25, //200,
                               width: width,
                               //color: Colors.grey[300],
                               child: Stack(
@@ -185,8 +191,8 @@ class _HomePageState extends State<HomePage> {
                                       top: 0,
                                       right: -20,
                                       child: Container(
-                                        height: 200,
-                                        width: 250,
+                                        height: height * 0.22,//200,
+                                        width: width * 0.55,//250,
                                         child: FlareActor(
                                           'assets/weather3.flr',
                                           fit: BoxFit.contain,
@@ -202,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                                       '${dadosJson['main']['temp'].toString()[0]}' +
                                           '${dadosJson['main']['temp'].toString()[1].replaceAll(".", "")}°',
                                       style: TextStyle(
-                                          fontSize: 120,
+                                          fontSize: width * 0.29, //120,
                                           fontWeight: FontWeight.w600,
                                           color: corText),
                                     ),
@@ -215,14 +221,14 @@ class _HomePageState extends State<HomePage> {
                                         Text(
                                           'Min: ${dadosJson['main']['temp_min']}°',
                                           style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: width * 0.038,//15,
                                               fontWeight: FontWeight.w300,
                                               color: Colors.grey[400]),
                                         ),
                                         Text(
                                           '/ Max: ${dadosJson['main']['temp_max']}°',
                                           style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: width * 0.038,//15,
                                               fontWeight: FontWeight.w300,
                                               color: Colors.grey[400]),
                                         ),
@@ -233,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             SizedBox(
-                              height: 30,
+                              height: 20,
                             ),
                             Container(
                               //padding: EdgeInsets.only(left: 10,right: 10),
@@ -293,8 +299,8 @@ class _HomePageState extends State<HomePage> {
                                               style: TextStyle(
                                                   fontSize:
                                                       visibleDetalhes == true
-                                                          ? 20
-                                                          : 20,
+                                                          ? width * 0.05//20
+                                                          : width * 0.05,//20,
                                                   color: corText,
                                                   fontWeight:
                                                       visibleDetalhes == true
@@ -333,8 +339,8 @@ class _HomePageState extends State<HomePage> {
                                               style: TextStyle(
                                                   fontSize:
                                                       visibleDetalhes == false
-                                                          ? 20
-                                                          : 20,
+                                                          ? width * 0.05//20
+                                                          : width * 0.05,//20,
                                                   color: corText,
                                                   fontWeight:
                                                       visibleDetalhes == false
@@ -349,7 +355,6 @@ class _HomePageState extends State<HomePage> {
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  
                                 ],
                               ),
                             ),
@@ -361,7 +366,7 @@ class _HomePageState extends State<HomePage> {
                     }),
               ),
               Container(
-                height: visibleDetalhes == false ? 0 : 400,
+                height: visibleDetalhes == false ? 0 : height * 0.4,//400,
                 //visible: visibleDetalhes,
                 child: Padding(
                   padding: EdgeInsets.only(left: 30, right: 30, top: 0),
@@ -369,7 +374,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Container(
-                height: visibleDetalhes == true ?0: 400,
+                height: visibleDetalhes == true ? 0 : height * 0.4,//400,
                 //visible: visibleDetalhes == false ? true :false,
                 child: Padding(
                   padding: EdgeInsets.only(left: 30, right: 30, top: 0),
@@ -387,6 +392,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget tempHoje() {
+
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
     return FutureBuilder(
         future: buscarClima(util.appID,
             _cidadeInformada == null ? util.cidadeDefault : _cidadeInformada),
@@ -394,167 +403,168 @@ class _HomePageState extends State<HomePage> {
           Map dadosJson = snapshot.data;
           if (snapshot.hasData) {
             return Column(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                          color: corUmi,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: Colors.blue[200],
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                              child: Icon(
-                                Icons.invert_colors,
-                                color: Colors.blue[800],
-                                size: 35,
-                              ),
-                            ),
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                      color: corUmi, borderRadius: BorderRadius.circular(15)),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.blue[200],
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Center(
+                          child: Icon(
+                            Icons.invert_colors,
+                            color: Colors.blue[800],
+                            size: width * 0.08//35,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Text(
-                              'Umidade: ${dadosJson['main']['humidity']}%',
-                              style: TextStyle(fontSize: 20, color: corText),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: corVisi,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: Colors.orange[200],
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                              child: Icon(
-                                Icons.wb_sunny,
-                                color: Colors.orange[800],
-                                size: 35,
-                              ),
-                            ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text(
+                          'Umidade: ${dadosJson['main']['humidity']}%',
+                          style: TextStyle(fontSize: width * 0.045,//20, 
+                          color: corText),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: corVisi, borderRadius: BorderRadius.circular(15)),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.orange[200],
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Center(
+                          child: Icon(
+                            Icons.wb_sunny,
+                            color: Colors.orange[800],
+                            size: width * 0.08//35,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Text(
-                              'Visibilidade: ${dadosJson['visibility']} m',
-                              style: TextStyle(fontSize: 20, color: corText),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: corVent,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                              child: Icon(
-                                Icons.gesture,
-                                color: Colors.grey[800],
-                                size: 35,
-                              ),
-                            ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text(
+                          'Visibilidade: ${dadosJson['visibility']} m',
+                          style: TextStyle(fontSize: width * 0.045,//20, 
+                          color: corText),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: corVent, borderRadius: BorderRadius.circular(15)),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Center(
+                          child: Icon(
+                            Icons.gesture,
+                            color: Colors.grey[800],
+                            size: width * 0.08//35,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Text(
-                              'Ventos: ${dadosJson['wind']['speed']} km/h',
-                              style: TextStyle(fontSize: 20, color: corText),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: corPres,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: Colors.green[200],
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                              child: Icon(
-                                Icons.tonality,
-                                color: Colors.green[800],
-                                size: 35,
-                              ),
-                            ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text(
+                          'Ventos: ${dadosJson['wind']['speed']} km/h',
+                          style: TextStyle(fontSize: width * 0.045,//20, 
+                          color: corText),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: corPres, borderRadius: BorderRadius.circular(15)),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.green[200],
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Center(
+                          child: Icon(
+                            Icons.tonality,
+                            color: Colors.green[800],
+                            size: width * 0.08//35,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Text(
-                              'Pressão At: ${dadosJson['main']['pressure']} hPa',
-                              style: TextStyle(fontSize: 20, color: corText),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: corNuv,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: Colors.indigo[200],
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                              child: Icon(
-                                Icons.filter_drama,
-                                color: Colors.indigo[800],
-                                size: 35,
-                              ),
-                            ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text(
+                          'Pressão At: ${dadosJson['main']['pressure']} hPa',
+                          style: TextStyle(fontSize: width * 0.045,//20, 
+                          color: corText),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: corNuv,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.indigo[200],
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Center(
+                          child: Icon(
+                            Icons.filter_drama,
+                            color: Colors.indigo[800],
+                            size: width * 0.08//35,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Text(
-                              'Nuvens: ${dadosJson['clouds']['all']}%',
-                              style: TextStyle(fontSize: 20, color: corText),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                    )
-                  ],
-                );
+                      Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text(
+                          'Nuvens: ${dadosJson['clouds']['all']}%',
+                          style: TextStyle(fontSize: width * 0.045,//20, 
+                          color: corText),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
           } else {
             return Container();
           }
@@ -578,7 +588,7 @@ class _HomePageState extends State<HomePage> {
             List listTemp = [];
             List listTempDIA = [];
             List listMapDataTemp = [];
-            List iconList =[];
+            List iconList = [];
 
             conteudolist.forEach((f) {
               if (f.toString().contains("${anoMes}")) {
@@ -597,11 +607,14 @@ class _HomePageState extends State<HomePage> {
 
                 if (f.toString().contains('$dataListaUnica')) {
                   somaTemperaturas = somaTemperaturas +
-                      double.parse(f['main']['temp'].toString().replaceAll(',', '.'));
-                      if(f.toString().contains('$dataListaUnica 15:00:00')){
-                        iconList.add({'data':'$dataListaUnica 15:00:00','icon':f['weather'][0]['icon'].toString()});
-                        
-                      }
+                      double.parse(
+                          f['main']['temp'].toString().replaceAll(',', '.'));
+                  if (f.toString().contains('$dataListaUnica 15:00:00')) {
+                    iconList.add({
+                      'data': '$dataListaUnica 15:00:00',
+                      'icon': f['weather'][0]['icon'].toString()
+                    });
+                  }
                   qntdForPercorrido++;
                 }
               });
@@ -609,16 +622,24 @@ class _HomePageState extends State<HomePage> {
               listTemp.add(somaTemperaturas);
 
               print('SOMA Temp:${listDiasUnicos[i]} :$somaTemperaturas');
-              print('Media Temp:${listDiasUnicos[i]} :${(somaTemperaturas / qntdForPercorrido)}');
+              print(
+                  'Media Temp:${listDiasUnicos[i]} :${(somaTemperaturas / qntdForPercorrido)}');
 
               listTempDIA.add((somaTemperaturas / qntdForPercorrido).round());
-              listMapDataTemp.add({'data': listDiasUnicos[i],'temp_media':(somaTemperaturas / qntdForPercorrido).toStringAsFixed(2)});
+              listMapDataTemp.add({
+                'data': listDiasUnicos[i],
+                'temp_media':
+                    (somaTemperaturas / qntdForPercorrido).toStringAsFixed(2)
+              });
 
               somaTemperaturas = 0;
               qntdForPercorrido = 0;
             }
+            print('COMPARACAO DATAS(LIST MAP TEMP e NOW): ${listMapDataTemp[0]['data']}  -  ${formatAnoMesDIA.format(dataAtual)}');
+            if(listMapDataTemp[0].toString().contains(formatAnoMesDIA.format(dataAtual))){
+              listMapDataTemp.removeAt(0);
+            }
 
-            listMapDataTemp.removeAt(0);
             
 
             print('----------------------');
@@ -627,32 +648,32 @@ class _HomePageState extends State<HomePage> {
             print('LIST MAP DIA_TEMP: $listMapDataTemp');
 
             print('----------------------');
-            iconList.removeAt(0);
-            if(iconList.length<5){
-              iconList.add({'icon':'03d'});
+            //iconList.removeAt(0);
+            if (iconList.length < 5) {
+              iconList.add({'icon': '03d'});
             }
-            
+
             print('ICON LIST: $iconList');
 
             return Container(
-              height: 50,
+              //height: 50,
               //color: Colors.grey[300],
               width: MediaQuery.of(context).size.width,
               child: ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
-              itemCount: listMapDataTemp.length,
-              itemBuilder: (context, index) {
-                //return Text('${listMapDataTemp[index]['data']} -> ${listMapDataTemp[index]['temp_media']}');
-                return ItemListTempWeek(
-                  data: listMapDataTemp[index]['data'].toString(),
-                  temp: listMapDataTemp[index]['temp_media'].toString(),
-                  corText: corTextList,
-                  corContainer: corContainerItemList,
-                  animation: iconList[index]['icon'],
-                );
-                
-              },
-            ),
+                itemCount: listMapDataTemp.length,
+                itemBuilder: (context, index) {
+                  //return Text('${listMapDataTemp[index]['data']} -> ${listMapDataTemp[index]['temp_media']}');
+                  return ItemListTempWeek(
+                    data: listMapDataTemp[index]['data'].toString(),
+                    temp: listMapDataTemp[index]['temp_media'].toString(),
+                    corText: corTextList,
+                    corContainer: corContainerItemList,
+                    animation: iconList[index]['icon'],
+                  );
+                },
+              ),
             );
           } else {
             return Container();
