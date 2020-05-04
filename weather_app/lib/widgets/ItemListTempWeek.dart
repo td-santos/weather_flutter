@@ -39,7 +39,7 @@ class ItemListTempWeek extends StatelessWidget {
               
                   Container(
                     width: width * 0.2,//100,
-                    padding: EdgeInsets.only(left: 20,right: 20,top: 15,bottom: 15),
+                    padding: EdgeInsets.only(left: width * 0.02,right: width * 0.02,top: width * 0.04,bottom: width * 0.04),
                     decoration: BoxDecoration(
                         //color: Colors.blue[900],
                         gradient: LinearGradient(
@@ -70,8 +70,8 @@ class ItemListTempWeek extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Container(
-                    height: 50,
-                    width: 50,
+                    height: width * 0.1,
+                    width: width * 0.1,
                     child: FlareActor(
                       'assets/weather3.flr',
                       fit: BoxFit.contain,
@@ -94,7 +94,7 @@ class ItemListTempWeek extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 10,
+          height: width * 0.015,
         )
       ],
     );

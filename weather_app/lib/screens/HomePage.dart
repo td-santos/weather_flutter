@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/api/weatherAPI.dart';
 import 'package:weather_app/util/util.dart' as util;
+import 'package:weather_app/widgets/DetalhesHoje.dart';
 import 'package:weather_app/widgets/ItemListTempWeek.dart';
+import 'package:weather_app/widgets/PrevisaoSemanal.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,9 +23,6 @@ class _HomePageState extends State<HomePage> {
   Color corUmi, corVisi, corVent, corPres, corNuv;
   Color corText, corFundo, corTextList, corContainerItemList;
   bool visibleDetalhes;
-  var formatAnoMesDIA = DateFormat("yyyy-MM-dd");
-  var formatAnoMes = DateFormat("yyyy-MM-");
-  String anoMes;
 
   setCores() {
     if (valueSwitch == false) {
@@ -37,11 +36,11 @@ class _HomePageState extends State<HomePage> {
       corTextList = Colors.grey[900];
       corContainerItemList = Colors.grey[100];
     } else {
-      corUmi = Colors.grey[700];
-      corVisi = Colors.grey[700];
-      corVent = Colors.grey[700];
-      corPres = Colors.grey[700];
-      corNuv = Colors.grey[700];
+      corUmi = Colors.grey[850];
+      corVisi = Colors.grey[850];
+      corVent = Colors.grey[850];
+      corPres = Colors.grey[850];
+      corNuv = Colors.grey[850];
       corText = Colors.white;
       corFundo = Colors.grey[900];
       corTextList = Colors.orange[600];
@@ -54,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     setCores();
-    anoMes = formatAnoMes.format(dataAtual);
+
     visibleCidade = true;
     visibleDetalhes = true;
   }
@@ -74,7 +73,8 @@ class _HomePageState extends State<HomePage> {
         title: Text(
           'CleanWeather',
           style: TextStyle(
-            color: corText,
+            fontSize: width * 0.05,
+            color: corText.withOpacity(0.7),
           ),
         ),
         centerTitle: true,
@@ -92,14 +92,15 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
         child: Container(
-          height: height,
+          //height: height,
           width: width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: 30, right: 30, top: 20),
+                padding: EdgeInsets.only(left: width * 0.1, right: width * 0.1, top: width * 0.04),
                 child: FutureBuilder(
                     future: buscarClima(
                         util.appID,
@@ -115,14 +116,14 @@ class _HomePageState extends State<HomePage> {
                             Row(
                               children: <Widget>[
                                 GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     setState(() {
-                                      visibleCidade =false;
+                                      visibleCidade = false;
                                     });
                                   },
                                   child: Icon(
                                     Icons.location_on,
-                                    size: width * 0.08,//30,
+                                    size: width * 0.08, //30,
                                     color: valueSwitch == false
                                         ? Colors.grey[850]
                                         : Colors.orange[600],
@@ -139,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                                       child: Text(
                                         '${dadosJson['name']}',
                                         style: TextStyle(
-                                            fontSize: width * 0.09,//40,
+                                            fontSize: width * 0.09, //40,
                                             fontWeight: FontWeight.bold,
                                             color: corText),
                                       ),
@@ -171,18 +172,19 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                             SizedBox(
-                              height: 5,
+                              height: width * 0.009,
                             ),
                             Text(
                               '       ${formatData.format(dataAtual)}',
                               style: TextStyle(
-                                  fontSize: width * 0.04 /*17*/, color: Colors.orange[700]),
+                                  fontSize: width * 0.04 /*17*/,
+                                  color: Colors.orange[700]),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: width * 0.01,
                             ),
                             Container(
-                              height:height * 0.25, //200,
+                              height: height * 0.25, //200,
                               width: width,
                               //color: Colors.grey[300],
                               child: Stack(
@@ -191,8 +193,8 @@ class _HomePageState extends State<HomePage> {
                                       top: 0,
                                       right: -20,
                                       child: Container(
-                                        height: height * 0.22,//200,
-                                        width: width * 0.55,//250,
+                                        height: height * 0.22, //200,
+                                        width: width * 0.55, //250,
                                         child: FlareActor(
                                           'assets/weather3.flr',
                                           fit: BoxFit.contain,
@@ -214,21 +216,21 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   Positioned(
-                                    top: 140,
-                                    left: 10,
+                                    top: width * 0.33,//140,
+                                    left: 5,
                                     child: Row(
                                       children: <Widget>[
                                         Text(
                                           'Min: ${dadosJson['main']['temp_min']}°',
                                           style: TextStyle(
-                                              fontSize: width * 0.038,//15,
+                                              fontSize: width * 0.038, //15,
                                               fontWeight: FontWeight.w300,
                                               color: Colors.grey[400]),
                                         ),
                                         Text(
                                           '/ Max: ${dadosJson['main']['temp_max']}°',
                                           style: TextStyle(
-                                              fontSize: width * 0.038,//15,
+                                              fontSize: width * 0.038, //15,
                                               fontWeight: FontWeight.w300,
                                               color: Colors.grey[400]),
                                         ),
@@ -239,37 +241,20 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: width * 0.03,
                             ),
                             Container(
-                              //padding: EdgeInsets.only(left: 10,right: 10),
                               decoration: BoxDecoration(
-                                //color: Colors.white,
                                 borderRadius: BorderRadius.circular(15),
-                                /* boxShadow: [BoxShadow(
-                                  color: Colors.grey,
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 0,
-                                  blurRadius: 7
-                                )]*/
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  SizedBox(
-                                    height: 0,
-                                  ),
+                                  
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      /*Text(
-                                        'Detalhes',
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.bold,
-                                            color: corText),
-                                      ),*/
                                       GestureDetector(
                                         onTap: () {
                                           setState(() {
@@ -299,8 +284,8 @@ class _HomePageState extends State<HomePage> {
                                               style: TextStyle(
                                                   fontSize:
                                                       visibleDetalhes == true
-                                                          ? width * 0.05//20
-                                                          : width * 0.05,//20,
+                                                          ? width * 0.05 //20
+                                                          : width * 0.05, //20,
                                                   color: corText,
                                                   fontWeight:
                                                       visibleDetalhes == true
@@ -339,8 +324,8 @@ class _HomePageState extends State<HomePage> {
                                               style: TextStyle(
                                                   fontSize:
                                                       visibleDetalhes == false
-                                                          ? width * 0.05//20
-                                                          : width * 0.05,//20,
+                                                          ? width * 0.05 //20
+                                                          : width * 0.05, //20,
                                                   color: corText,
                                                   fontWeight:
                                                       visibleDetalhes == false
@@ -353,7 +338,7 @@ class _HomePageState extends State<HomePage> {
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 20,
+                                    height: width * 0.03,
                                   ),
                                 ],
                               ),
@@ -366,20 +351,32 @@ class _HomePageState extends State<HomePage> {
                     }),
               ),
               Container(
-                height: visibleDetalhes == false ? 0 : height * 0.4,//400,
+                height: visibleDetalhes == false ? 0 : height * 0.5, //400,
                 //visible: visibleDetalhes,
                 child: Padding(
                   padding: EdgeInsets.only(left: 30, right: 30, top: 0),
-                  child: tempHoje(),
+                  child: DetalhesHoje(
+                    cidade: _cidadeInformada,
+                    corNuv: corNuv,
+                    corPres: corPres,
+                    corText: corText,
+                    corUmi: corUmi,
+                    corVent: corVent,
+                    corVisi: corVisi,
+                  ), //tempHoje(),
                 ),
               ),
               Container(
-                height: visibleDetalhes == true ? 0 : height * 0.4,//400,
+                height: visibleDetalhes == true ? 0 : height * 0.6, //400,
                 //visible: visibleDetalhes == false ? true :false,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 30, right: 30, top: 0),
-                  child: tempSemana(_cidadeInformada),
-                ),
+                    padding: EdgeInsets.only(left: 30, right: 30, top: 0),
+                    child: PrevisaoSemanal(
+                      cidade: _cidadeInformada,
+                      corContainerItemList: corContainerItemList,
+                      corTextList: corTextList,
+                    ) //tempSemana(_cidadeInformada),
+                    ),
               ),
               SizedBox(
                 height: 30,
@@ -389,295 +386,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  Widget tempHoje() {
-
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-
-    return FutureBuilder(
-        future: buscarClima(util.appID,
-            _cidadeInformada == null ? util.cidadeDefault : _cidadeInformada),
-        builder: (context, snapshot) {
-          Map dadosJson = snapshot.data;
-          if (snapshot.hasData) {
-            return Column(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                      color: corUmi, borderRadius: BorderRadius.circular(15)),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.blue[200],
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Center(
-                          child: Icon(
-                            Icons.invert_colors,
-                            color: Colors.blue[800],
-                            size: width * 0.08//35,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Text(
-                          'Umidade: ${dadosJson['main']['humidity']}%',
-                          style: TextStyle(fontSize: width * 0.045,//20, 
-                          color: corText),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: corVisi, borderRadius: BorderRadius.circular(15)),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.orange[200],
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Center(
-                          child: Icon(
-                            Icons.wb_sunny,
-                            color: Colors.orange[800],
-                            size: width * 0.08//35,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Text(
-                          'Visibilidade: ${dadosJson['visibility']} m',
-                          style: TextStyle(fontSize: width * 0.045,//20, 
-                          color: corText),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: corVent, borderRadius: BorderRadius.circular(15)),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Center(
-                          child: Icon(
-                            Icons.gesture,
-                            color: Colors.grey[800],
-                            size: width * 0.08//35,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Text(
-                          'Ventos: ${dadosJson['wind']['speed']} km/h',
-                          style: TextStyle(fontSize: width * 0.045,//20, 
-                          color: corText),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: corPres, borderRadius: BorderRadius.circular(15)),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.green[200],
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Center(
-                          child: Icon(
-                            Icons.tonality,
-                            color: Colors.green[800],
-                            size: width * 0.08//35,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Text(
-                          'Pressão At: ${dadosJson['main']['pressure']} hPa',
-                          style: TextStyle(fontSize: width * 0.045,//20, 
-                          color: corText),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: corNuv,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.indigo[200],
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Center(
-                          child: Icon(
-                            Icons.filter_drama,
-                            color: Colors.indigo[800],
-                            size: width * 0.08//35,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Text(
-                          'Nuvens: ${dadosJson['clouds']['all']}%',
-                          style: TextStyle(fontSize: width * 0.045,//20, 
-                          color: corText),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            );
-          } else {
-            return Container();
-          }
-        });
-  }
-
-  Widget tempSemana(String cidade) {
-    return FutureBuilder(
-        future: buscarListToday(
-            util.appID, cidade == null ? util.cidadeDefault : cidade),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            Map conteudo = snapshot.data;
-            List conteudolist = conteudo['list'];
-
-            double somaTemperaturas = 0;
-            int qntdForPercorrido = 0;
-            List listDias = [];
-            //List listaHJ = [];
-            List listDiasUnicos = [];
-            List listTemp = [];
-            List listTempDIA = [];
-            List listMapDataTemp = [];
-            List iconList = [];
-
-            conteudolist.forEach((f) {
-              if (f.toString().contains("${anoMes}")) {
-                listDias
-                    .add(formatAnoMesDIA.format(DateTime.parse(f['dt_txt'])));
-                //listaHJ.add(f);
-              }
-            });
-
-            listDiasUnicos = listDias.toSet().toList();
-
-            for (int i = 0; i < listDiasUnicos.length; i++) {
-              conteudolist.forEach((f) {
-                String dataListaUnica;
-                dataListaUnica = listDiasUnicos[i];
-
-                if (f.toString().contains('$dataListaUnica')) {
-                  somaTemperaturas = somaTemperaturas +
-                      double.parse(
-                          f['main']['temp'].toString().replaceAll(',', '.'));
-                  if (f.toString().contains('$dataListaUnica 15:00:00')) {
-                    iconList.add({
-                      'data': '$dataListaUnica 15:00:00',
-                      'icon': f['weather'][0]['icon'].toString()
-                    });
-                  }
-                  qntdForPercorrido++;
-                }
-              });
-
-              listTemp.add(somaTemperaturas);
-
-              print('SOMA Temp:${listDiasUnicos[i]} :$somaTemperaturas');
-              print(
-                  'Media Temp:${listDiasUnicos[i]} :${(somaTemperaturas / qntdForPercorrido)}');
-
-              listTempDIA.add((somaTemperaturas / qntdForPercorrido).round());
-              listMapDataTemp.add({
-                'data': listDiasUnicos[i],
-                'temp_media':
-                    (somaTemperaturas / qntdForPercorrido).toStringAsFixed(2)
-              });
-
-              somaTemperaturas = 0;
-              qntdForPercorrido = 0;
-            }
-            print('COMPARACAO DATAS(LIST MAP TEMP e NOW): ${listMapDataTemp[0]['data']}  -  ${formatAnoMesDIA.format(dataAtual)}');
-            if(listMapDataTemp[0].toString().contains(formatAnoMesDIA.format(dataAtual))){
-              listMapDataTemp.removeAt(0);
-            }
-
-            
-
-            print('----------------------');
-            print('LISTA TEMP: $listTemp');
-            print('LISTA TEMP MEDIA: $listTempDIA');
-            print('LIST MAP DIA_TEMP: $listMapDataTemp');
-
-            print('----------------------');
-            //iconList.removeAt(0);
-            if (iconList.length < 5) {
-              iconList.add({'icon': '03d'});
-            }
-
-            print('ICON LIST: $iconList');
-
-            return Container(
-              //height: 50,
-              //color: Colors.grey[300],
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemCount: listMapDataTemp.length,
-                itemBuilder: (context, index) {
-                  //return Text('${listMapDataTemp[index]['data']} -> ${listMapDataTemp[index]['temp_media']}');
-                  return ItemListTempWeek(
-                    data: listMapDataTemp[index]['data'].toString(),
-                    temp: listMapDataTemp[index]['temp_media'].toString(),
-                    corText: corTextList,
-                    corContainer: corContainerItemList,
-                    animation: iconList[index]['icon'],
-                  );
-                },
-              ),
-            );
-          } else {
-            return Container();
-          }
-        });
   }
 }
