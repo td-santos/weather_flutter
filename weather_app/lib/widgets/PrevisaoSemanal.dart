@@ -93,6 +93,9 @@ class PrevisaoSemanal extends StatelessWidget {
                 .contains(formatAnoMesDIA.format(dataAtual))) {
               listMapDataTemp.removeAt(0);
             }
+            if(listMapDataTemp.length >5){
+              listMapDataTemp.removeLast();
+            }
 
             print('----------------------');
             print('LISTA TEMP: $listTemp');

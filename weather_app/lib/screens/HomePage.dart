@@ -5,10 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:weather_app/api/weatherAPI.dart';
 import 'package:weather_app/util/util.dart' as util;
 import 'package:weather_app/widgets/DetalhesHoje.dart';
-import 'package:weather_app/widgets/ItemListTempWeek.dart';
 import 'package:weather_app/widgets/PrevisaoSemanal.dart';
 
 class HomePage extends StatefulWidget {
+  final String latitude,longitude;
+
+  const HomePage({Key key, this.latitude, this.longitude}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -24,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   Color corText, corFundo, corTextList, corContainerItemList;
   bool visibleDetalhes;
 
+  
   setCores() {
     if (valueSwitch == false) {
       corUmi = Colors.blue[100];
@@ -53,18 +56,16 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     setCores();
-
     visibleCidade = true;
-    visibleDetalhes = true;
-  }
+    visibleDetalhes = true;    
+  }  
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;    
 
     return Scaffold(
       backgroundColor: corFundo,
@@ -99,6 +100,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              //Text("${widget.latitude} --- ${widget.longitude} "),
               Padding(
                 padding: EdgeInsets.only(left: width * 0.1, right: width * 0.1, top: width * 0.04),
                 child: FutureBuilder(
@@ -174,8 +176,7 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(
                               height: width * 0.009,
                             ),
-                            Text(
-                              '       ${formatData.format(dataAtual)}',
+                            Text('       ${formatData.format(dataAtual)}',
                               style: TextStyle(
                                   fontSize: width * 0.04 /*17*/,
                                   color: Colors.orange[700]),
@@ -220,15 +221,13 @@ class _HomePageState extends State<HomePage> {
                                     left: 5,
                                     child: Row(
                                       children: <Widget>[
-                                        Text(
-                                          'Min: ${dadosJson['main']['temp_min']}°',
+                                        Text('Min: ${dadosJson['main']['temp_min']}°',
                                           style: TextStyle(
                                               fontSize: width * 0.038, //15,
                                               fontWeight: FontWeight.w300,
                                               color: Colors.grey[400]),
                                         ),
-                                        Text(
-                                          '/ Max: ${dadosJson['main']['temp_max']}°',
+                                        Text('/ Max: ${dadosJson['main']['temp_max']}°',
                                           style: TextStyle(
                                               fontSize: width * 0.038, //15,
                                               fontWeight: FontWeight.w300,
@@ -252,8 +251,7 @@ class _HomePageState extends State<HomePage> {
                                 children: <Widget>[
                                   
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       GestureDetector(
                                         onTap: () {
@@ -279,8 +277,7 @@ class _HomePageState extends State<HomePage> {
                                               borderRadius:
                                                   BorderRadius.circular(15)),
                                           child: Center(
-                                            child: Text(
-                                              'Detalhes',
+                                            child: Text('Detalhes',
                                               style: TextStyle(
                                                   fontSize:
                                                       visibleDetalhes == true
@@ -319,8 +316,7 @@ class _HomePageState extends State<HomePage> {
                                               borderRadius:
                                                   BorderRadius.circular(15)),
                                           child: Center(
-                                            child: Text(
-                                              'Previsão',
+                                            child: Text('Previsão',
                                               style: TextStyle(
                                                   fontSize:
                                                       visibleDetalhes == false
