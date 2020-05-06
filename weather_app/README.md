@@ -15,11 +15,15 @@ Aplicativo com o inuito de mostrar a previsão climática atual e do dia seguint
 
  # O App aborda:
 
-    • Consumo de api(openweathermap).
-  
-    • Mudança de Cores de acordo com o horário(dia e noite) .
+     • Consumo de api(openweathermap).
     
     • Mostra o clima de acordo com a cidade escolhida.
+  
+    • DarkMode.
+    
+    • Animações com Flare.
+    
+    • Animações com AnimatedContainer.
   
     
 </br></br>
