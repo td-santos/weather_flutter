@@ -12,6 +12,12 @@ Aplicativo com o inuito de mostrar a previsão climática atual e do dia seguint
 
  
 </br>
+ <br><br>
+ 
+ ## Video Demonstrativo
+ 
+ [Weather App Video](https://youtu.be/wJ5KLjzt8nc)
+ <br><br>
 
  # O App aborda:
 
